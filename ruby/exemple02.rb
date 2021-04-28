@@ -1,3 +1,8 @@
+# Easy api call with authentication 
+#    
+#   Replace ACCESSKEY:SECRETKEY by yours
+#
+
 require 'ffi'
 
 
@@ -7,7 +12,7 @@ module Curl
 
   typedef :long_long, :curl_off_t
 
-  #Curl use different ranges of values we do the same 
+  #Curl use different ranges of values for the defines we do the same 
   option_long          = 0
   option_objectpoint   = 10000
   option_functionpoint = 20000 
@@ -29,12 +34,13 @@ module Curl
 
 =begin
   To use the right easy_setopt function refer to this :
-         easy_setopt_long       :option_long
+         easy_setopt_long       : option_long
          easy_setopt_string     : option_objectpoint
          easy_setopt_pointer    : option_functionpoint
          easy_setopt_curl_off_t : option_off_t
 
-  Explanation :  
+  Explanation : In the enum, each symbol is associated with a value in the shape of : option_* + value
+                Use the above table to match the rigth option and method.
 =end
   
   attach_function :easy_setopt_long, :curl_easy_setopt, [:pointer, :option, :long], :int
@@ -44,10 +50,19 @@ module Curl
   
 end
 
+# We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
-code = Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadVms")
+
+# Putting the URL and posible POST data 
+Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadVms")
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
+
+# Let's see what curl is doing
 Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
+
+# To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
+
+
 Curl.curl_easy_perform(c)
