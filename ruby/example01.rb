@@ -1,7 +1,9 @@
 # Easy API request without authentication
+# 
 #
-# The API call is a POST method 
+#    NOTICE : This example only works with libcurl 7.75 or above
 #
+
 require 'ffi'
 
 module Curl

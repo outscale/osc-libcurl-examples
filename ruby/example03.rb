@@ -1,4 +1,9 @@
 # Easy API CALL with authentication and data in postfield 
+#
+#    Replace ACCESSKEY:SECRETKEY by yours
+#
+#    NOTICE : This example only works with libcurl 7.75 or above
+#
 
 require 'ffi'
 
