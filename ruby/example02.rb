@@ -64,5 +64,17 @@ Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
 
+# You can store the return value into a variable : it returns an integer
+code = Curl.curl_easy_perform(c)
 
-Curl.curl_easy_perform(c)
+# It then can be used for error handling for example
+# Curl's error codes : https://curl.se/libcurl/c/libcurl-errors.html
+#
+case code
+when 0
+  puts "All went well"
+when 6
+  puts "Couldn't resolve host : Either server is unreachable, or url is wrong"
+else
+  puts "Some error occured"
+end
