@@ -16,7 +16,7 @@ module Curl
   option_long          = 0
   option_objectpoint   = 10000
   option_functionpoint = 20000 
-  option_off_t         = 3000
+  option_off_t         = 30000
   
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
