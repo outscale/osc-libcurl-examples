@@ -1,4 +1,4 @@
-# Easy api call with authentication 
+# Easy api call with authentication and writing result data into file 
 #    
 #   Replace ACCESSKEY:SECRETKEY by yours
 #
@@ -19,13 +19,15 @@ module Curl
   option_objectpoint   = 10000
   option_functionpoint = 20000 
   option_off_t         = 30000
+  option_cbpoint       = option_objectpoint
   
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
                  :CURLOPT_VERBOSE,       option_long + 41,
                  :CURLOPT_POSTFIELDS,    option_objectpoint + 15,
                  :CURLOPT_POSTFIELDSIZE, option_long + 60,
-                 :CURLOPT_AWS_SIGV4,     option_objectpoint + 305
+                 :CURLOPT_AWS_SIGV4,     option_objectpoint + 305,
+                 :CURLOPT_WRITEDATA,     option_cbpoint + 1,
                 ]
 
   #Attaching functions
@@ -49,8 +51,15 @@ module Curl
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
+
+
+  attach_function :fopen, [:string, :string], :pointer
+  attach_function :fclose, [:pointer], :int
   
 end
+
+# Pointer to a file called file.txt. FFI manage the pointer for us.
+file = FFI::AutoPointer.new(Curl.fopen("file.txt","wb"), Curl.method(:fclose))
 
 # We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
@@ -65,6 +74,9 @@ Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
+
+#The request returns a json file that we will write inside the file
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, file)
 
 # You can store the return value into a variable : it returns an integer
 code = Curl.curl_easy_perform(c)
