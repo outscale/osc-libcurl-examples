@@ -1,7 +1,9 @@
 /* Example 02 :
 This example show how to create a security rule.
 The answer from the request is displayed on the standard output.
- */
+
+   /!\ : This example only works with libcurl 7.75 or above
+*/
 
 #include <stdio.h>
 #include <string.h>

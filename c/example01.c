@@ -1,6 +1,8 @@
 /* Example 01 :
-This example show how to put the result 
-of a curl request inside a file
+This example show how to put the result of a curl request inside a file.
+This example also shows how to read available images and all their informations.
+
+    /!\ : This example only works with libcurl 7.75 or above
  */
 
 #include <stdio.h>

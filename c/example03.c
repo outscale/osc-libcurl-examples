@@ -1,6 +1,8 @@
 /* Example 03 :
 This example show how to read a specified instance.
 The answer from the request is displayed on the standard output.
+
+    /!\ : This example only work with libcurl 7.75 or above
  */
 
 #include <stdio.h>
