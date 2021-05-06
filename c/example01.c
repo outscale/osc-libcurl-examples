@@ -14,19 +14,20 @@ This example also shows how to read available images and all their informations.
 size_t write_data(void *data, size_t size, size_t nmemb, void *userp){
   size_t realsize = size * nmemb;
 
-  char **response_ptr = (char**)userp;
-  *response_ptr = strndup(data, realsize);
+  char **response = (char **) userp;
+  
+  char *temp = (char*) malloc(realsize);
+  *response  = (char *)  memcpy(temp, data, realsize); 
   
   return realsize; 
 }
 
-void main(){
+int main(void){
   // Getting the access key / secret key from environement
   const char *ak_sk = getenv("AKSK");
 
   // Variable that will store the data
   char *response;
-
   
   CURLcode res;
 
