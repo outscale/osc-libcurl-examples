@@ -25,7 +25,7 @@ void main(){
   const char *ak_sk = getenv("AKSK");
 
   // Variable that will store the data
-  struct memory chunk;
+  char *response;
 
   
   CURLcode res;
@@ -44,7 +44,7 @@ void main(){
 
   // Telling curl to use the write_data function to write over response
   curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, write_data);
-  curl_easy_setopt(c, CURLOPT_WRITEDATA, (void *)&chunk);
+  curl_easy_setopt(c, CURLOPT_WRITEDATA, &response);
 
   // For authentification we specify the method and our acces key / secret key
   curl_easy_setopt(c, CURLOPT_AWS_SIGV4, "osc");
@@ -54,5 +54,5 @@ void main(){
 
   curl_easy_cleanup(c);
 
-  printf("\n\n Output : %s", chunk.response);
+  printf("\n\n Output : %s", response);
 }
