@@ -1,5 +1,5 @@
 /* Example 01 :
-This example show how to put the result of a curl request inside a file.
+This example show how to put the result of a curl request inside a variable.
 This example also shows how to read available images and all their informations.
 
     /!\ : This example only works with libcurl 7.75 or above
@@ -10,13 +10,24 @@ This example also shows how to read available images and all their informations.
 #include <stdlib.h>
 #include "curl/curl.h"
 
+// Function that will write the data inside a variable
+size_t write_data(void *data, size_t size, size_t nmemb, void *userp){
+  size_t realsize = size * nmemb;
+
+  char **response_ptr = (char**)userp;
+  *response_ptr = strndup(data, realsize);
+  
+  return realsize; 
+}
+
 void main(){
   // Getting the access key / secret key from environement
   const char *ak_sk = getenv("AKSK");
 
-  // Opening a file where the result will be stored
-  FILE *file = fopen("file.txt", "wb");
+  // Variable that will store the data
+  struct memory chunk;
 
+  
   CURLcode res;
 
   // Creating the handler
@@ -31,8 +42,9 @@ void main(){
   // Empty post field to indicate we want to send a post request
   curl_easy_setopt(c, CURLOPT_POSTFIELDS, "");
 
-  // Telling curl to write the data fetched in the file
-  curl_easy_setopt(c, CURLOPT_WRITEDATA, file);
+  // Telling curl to use the write_data function to write over response
+  curl_easy_setopt(c, CURLOPT_WRITEFUNCTION, write_data);
+  curl_easy_setopt(c, CURLOPT_WRITEDATA, (void *)&chunk);
 
   // For authentification we specify the method and our acces key / secret key
   curl_easy_setopt(c, CURLOPT_AWS_SIGV4, "osc");
@@ -41,4 +53,6 @@ void main(){
   res = curl_easy_perform(c);
 
   curl_easy_cleanup(c);
+
+  printf("\n\n Output : %s", chunk.response);
 }
