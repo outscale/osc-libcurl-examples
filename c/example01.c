@@ -31,18 +31,12 @@ int main(void){
   const char *sk = getenv("OSC_SECRET_KEY");
 
   char ak_sk[AK_SIZE + SK_SIZE + 2];
-
-  printf("%s %s %i %i", ak, sk, AK_SIZE, SK_SIZE);
-
   
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
     abort();
   }
- 
   
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
-
-  printf("%s", ak_sk);
 
   /* Variable that will store the data */
   char *response;
