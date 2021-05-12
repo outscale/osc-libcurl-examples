@@ -1,15 +1,16 @@
-In this directory there is 3 examples written in C showing how to use libcurl with [outscale's API](https://docs.outscale.com/api).
+In this directory there is 3 examples written in Rust showing how to use libcurl with [outscale's API](https://docs.outscale.com/api).
+You can find a minimal implementation of libcurl using FII inside the /src/lib.rs file.
 
 > **Note** : These examples only work with libcurl 7.75 or above
 
 ## Example 1
-This example show how to make a call to the API and saving the result in a varaible in order to use it later.
+This example show how to make a simple call to the API.
 
 ## Example 2
-This example show how to make a call to the API with POST to create a Security Group.
+This example show how to make a call to the API and retreive the data inside a variable.
 
 ## Example 3
-This example show how to make a call to the API filtering the result with POST data.
+This example show how to make a call to the API with POST data.
 
 # Usage
 To run the examples use :
