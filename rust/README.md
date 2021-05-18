@@ -8,6 +8,7 @@ This example show how to make a simple call to the API.
 
 ## Example 2
 This example show how to make a call to the API and retreive the data inside a variable.
+> **Note** : Libcurl show a failure message saying that it failed to write the output. Ignore it.
 
 ## Example 3
 This example show how to make a call to the API with POST data.
