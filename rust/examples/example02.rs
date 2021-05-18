@@ -65,7 +65,7 @@ fn main() {
 	curl_easy_cleanup(c);
 
 
-	//Getting the wraped value by shaowing the varaible response
+	//Getting the wraped value by shadowing the variable response
 	let response = &(*response.take());
 	
 	println!("Output : {} \n", response);
