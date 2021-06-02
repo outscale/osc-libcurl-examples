@@ -8,6 +8,9 @@
 require 'ffi'
 
 
+$data_glob = "Some data string"
+
+
 module Curl
   extend FFI::Library
   ffi_lib '/usr/local/lib/libcurl.so' #Path to your curl library
@@ -28,6 +31,7 @@ module Curl
                  :CURLOPT_POSTFIELDSIZE, option_long + 60,
                  :CURLOPT_AWS_SIGV4,     option_objectpoint + 305,
                  :CURLOPT_WRITEDATA,     option_cbpoint + 1,
+                 :CURLOPT_WRITEFUNCTION, option_functionpoint + 11,
                 ]
 
   #Attaching functions
@@ -52,14 +56,22 @@ module Curl
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
 
+  # Function called by CURLOPT_WRITEFUNCTION. It copy the data of data pointer into userp and return a size
+  Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, :pointer]) do |data, size, nmemb, userp|
+    realsize = size * nmemb
 
-  attach_function :fopen, [:string, :string], :pointer
-  attach_function :fclose, [:pointer], :int
+    response = data.read_string(realsize)
+    userp.write_string_length(response.dup, response.length) 
+    
+    realsize
+  end
   
 end
 
-# Pointer to a file called file.txt. FFI manage the pointer for us.
-file = FFI::AutoPointer.new(Curl.fopen("file.txt","wb"), Curl.method(:fclose))
+
+
+# Pointer of type :string that will hold our output
+p_output = FFI::MemoryPointer.new(:string, 2048)
 
 # We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
@@ -76,19 +88,12 @@ Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
 
 #The request returns a json file that we will write inside the file
-Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, file)
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEFUNCTION, Curl::Callback)
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, p_output)
 
 # You can store the return value into a variable : it returns an integer
 code = Curl.curl_easy_perform(c)
 
-# It then can be used for error handling for example
-# Curl's error codes : https://curl.se/libcurl/c/libcurl-errors.html
-#
-case code
-when 0
-  puts "All went well"
-when 6
-  puts "Couldn't resolve host : Either server is unreachable, or url is wrong"
-else
-  puts "Some error occured"
-end
+#To use the output we get the data iinside the pointer
+output = p_output.read_string(2048)
+puts output
