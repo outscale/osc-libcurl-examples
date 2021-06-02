@@ -6,10 +6,12 @@ In this directory there is 3 examples written in RUBY showing how to use libcurl
 This example show how to make a call to the API that do not need authentication. 
 
 ## Example 2
-This example show how to make a call to the API that need authentication and save the result in a file.
+This example show how to make a call to the API that need authentication and save the result into a variable.
 
 ## Example 3
 This example show how to make a call to the API whit data to POST.
+
+
 
 # License
 
