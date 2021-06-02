@@ -19,7 +19,7 @@ fn callback(data: *const libc::c_char,
 
 	*userp.borrow_mut() = data_slice;
 	
-	size + nmemb
+	size * nmemb
     }
 }
 
