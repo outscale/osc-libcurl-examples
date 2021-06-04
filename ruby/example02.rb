@@ -107,7 +107,8 @@ Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
 
-#The request returns a json file that we will write inside the file
+# The first function tells libcurl to use our callback method
+# The second line we pass the varaible where the data should be written
 Curl.easy_setopt_pointer(c, :CURLOPT_WRITEFUNCTION, Curl::Callback)
 Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, output)
 
