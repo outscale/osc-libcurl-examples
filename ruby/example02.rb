@@ -7,8 +7,18 @@
 
 require 'ffi'
 
-
-$data_glob = "Some data string"
+module LibC
+  extend FFI::Library
+  ffi_lib FFI::Library::LIBC
+  
+  # memory allocators
+  attach_function :malloc, [:size_t], :pointer
+  attach_function :realloc, [:pointer, :size_t], :pointer
+  
+  # memory movers
+  attach_function :memcpy, [:pointer, :pointer, :size_t], :pointer
+  
+end
 
 
 module Curl
@@ -50,28 +60,39 @@ module Curl
   Explanation : In the enum, each symbol is associated with a value in the shape of : option_* + value
                 Use the above table to match the rigth option and method.
 =end
+
+  #Struct that holds the data returned by libcurl as a pointer and the size of the data
+  class DataStruct < FFI::Struct
+    layout :data, :pointer,
+           :size, :size_t
+  end
   
   attach_function :easy_setopt_long, :curl_easy_setopt, [:pointer, :option, :long], :int
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
+  attach_function :easy_setopt_callback, :curl_easy_setopt, [:pointer, :option, DataStruct.by_ref], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
 
+  
   # Function called by CURLOPT_WRITEFUNCTION. It copy the data of data pointer into userp and return a size
-  Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, :pointer]) do |data, size, nmemb, userp|
+  Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, DataStruct.by_ref]) do |data, size, nmemb, userp|
     realsize = size * nmemb
 
-    response = data.read_string(realsize)
-    userp.write_string_length(response.dup, response.length) 
+    # We can't write literal string inside struct so we write the data to a pointer
+    p_data = FFI::MemoryPointer.new(:char, realsize)
+    p_data.write_string(data.read_string(realsize))
+    p_data.autorelease = false # Prevent GC to wipe our data
+    
+    userp[:size] = realsize
+    userp[:data] = p_data
     
     realsize
   end
   
 end
 
-
-
-# Pointer of type :string that will hold our output
-p_output = FFI::MemoryPointer.new(:string, 2048)
+# We initialise a varaible with an empty struct
+output = Curl::DataStruct.new
 
 # We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
@@ -89,11 +110,12 @@ Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
 
 #The request returns a json file that we will write inside the file
 Curl.easy_setopt_pointer(c, :CURLOPT_WRITEFUNCTION, Curl::Callback)
-Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, p_output)
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, output)
 
 # You can store the return value into a variable : it returns an integer
 code = Curl.curl_easy_perform(c)
 
-#To use the output we get the data iinside the pointer
-output = p_output.read_string(2048)
-puts output
+#To use the output we read the string referenced by the pointer 
+output_str = output[:data].read_string(output[:size])
+
+puts output_str
