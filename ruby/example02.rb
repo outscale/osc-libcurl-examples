@@ -70,7 +70,6 @@ module Curl
   attach_function :easy_setopt_long, :curl_easy_setopt, [:pointer, :option, :long], :int
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
-  attach_function :easy_setopt_callback, :curl_easy_setopt, [:pointer, :option, DataStruct.by_ref], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
 
   
