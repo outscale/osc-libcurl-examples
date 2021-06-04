@@ -80,7 +80,7 @@ module Curl
     # We can't write literal string inside struct so we write the data to a pointer
     p_data = FFI::MemoryPointer.new(:char, realsize)
     p_data.write_string(data.read_string(realsize))
-    p_data.autorelease = false # Prevent GC to wipe our data
+    p_data.autorelease = true
     
     userp[:size] = realsize
     userp[:data] = p_data
