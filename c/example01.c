@@ -15,7 +15,7 @@ This example also shows how to read available images and all their informations.
 
 /* Function that will write the data inside a variable */
 size_t write_data(void *data, size_t size, size_t nmemb, void *userp){
-  size_t realsize = size * nmemb * 2;
+  size_t realsize = size * nmemb;
 
   char **response = userp;
   
