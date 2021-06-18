@@ -18,8 +18,7 @@ pub const CURLOPT_AWS_SIGV4: CURLoption = CURLOPTTYPE_OBJECTPOINT + 305;
 pub const CURLOPT_USERPWD: CURLoption = CURLOPTTYPE_OBJECTPOINT + 5;
 pub const CURLOPT_POSTFIELDS: CURLoption = CURLOPTTYPE_OBJECTPOINT + 15;
 pub const CURLOPT_WRITEDATA: CURLoption = CURLOPTTYPE_CBPOINT + 1;
-pub const CURLOPT_WRITEFUNCTION: CURLoption = CURLOPTTYPE_FUNCTIONPOINT + 11; 
-
+pub const CURLOPT_WRITEFUNCTION: CURLoption = CURLOPTTYPE_FUNCTIONPOINT + 11;
 
 #[link(name = "curl")]
 extern "C" {
@@ -28,9 +27,3 @@ extern "C" {
     pub fn curl_easy_setopt(curl: *mut CURL, option: CURLoption, ...) -> libc::c_int;
     pub fn curl_easy_perform(curl: *mut CURL) -> libc::c_int;
 }
-
-
-
-
-
-
