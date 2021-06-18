@@ -5,40 +5,37 @@ use std::ffi::CString;
 
 use rust::*;
 
-
 fn main() {
     unsafe {
-	// Getting AK and SK from variable environement 
-	let ak = env::var("OSC_ACCESS_KEY").unwrap();
-	let sk = env::var("OSC_SECRET_KEY").unwrap();
+        // Getting AK and SK from variable environement
+        let ak = env::var("OSC_ACCESS_KEY").unwrap();
+        let sk = env::var("OSC_SECRET_KEY").unwrap();
 
-	let ak_sk = CString::new(ak + ":" + &sk).unwrap();
-	
-	// Due to rust strong safety we need to wrap all of our strings into a CString
-	let post_data = "{ \"Filters\": {\"VmIds\": [\"i-5612802e\"]}}";
-	let data = CString::new(post_data).unwrap();
-	let url = CString::new("https://api.eu-west-2.outscale.com/api/v1/ReadVms").unwrap();
-	let provider = CString::new("osc").unwrap();
+        let ak_sk = CString::new(ak + ":" + &sk).unwrap();
 
-	// Initialize the curl handler
-	let c = curl_easy_init();
+        // Due to rust strong safety we need to wrap all of our strings into a CString
+        let post_data = "{ \"Filters\": {\"VmIds\": [\"i-5612802e\"]}}";
+        let data = CString::new(post_data).unwrap();
+        let url = CString::new("https://api.eu-west-2.outscale.com/api/v1/ReadVms").unwrap();
+        let provider = CString::new("osc").unwrap();
 
-	// See what curl is doing
-	curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
+        // Initialize the curl handler
+        let c = curl_easy_init();
 
-	// Setting url
-	curl_easy_setopt(c, CURLOPT_URL, url.to_str().unwrap());
+        // See what curl is doing
+        curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
 
-	curl_easy_setopt(c, CURLOPT_POSTFIELDS, data.to_str().unwrap());
-	// Authentification
-	curl_easy_setopt(c, CURLOPT_AWS_SIGV4, provider.to_str().unwrap());
-	curl_easy_setopt(c, CURLOPT_USERPWD, ak_sk.to_str().unwrap());
-	
-	// Perform
-	curl_easy_perform(c);
+        // Setting url
+        curl_easy_setopt(c, CURLOPT_URL, url.to_str().unwrap());
 
-	curl_easy_cleanup(c);
+        curl_easy_setopt(c, CURLOPT_POSTFIELDS, data.to_str().unwrap());
+        // Authentification
+        curl_easy_setopt(c, CURLOPT_AWS_SIGV4, provider.to_str().unwrap());
+        curl_easy_setopt(c, CURLOPT_USERPWD, ak_sk.to_str().unwrap());
+
+        // Perform
+        curl_easy_perform(c);
+
+        curl_easy_cleanup(c);
     }
-    
-    
 }
