@@ -70,7 +70,6 @@ module Curl
     # We can't write literal string inside struct so we write the data to a pointer
     p_data = FFI::MemoryPointer.new(:char, realsize)
     p_data.write_string(data.read_string(realsize))
-    p_data.autorelease = true
     userp[:size] = realsize
     userp[:data] = p_data
     realsize
@@ -88,9 +87,6 @@ c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
 Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadVms")
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
 
-# Let's see what curl is doing
-Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
-
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
 Curl.easy_setopt_string(c, :CURLOPT_USERPWD, aksk)
@@ -102,7 +98,6 @@ Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, output)
 
 # You can store the return value into a variable : it returns an integer
 code = Curl.curl_easy_perform(c)
-
 #To use the output we read the string referenced by the pointer
 output_str = output[:data].read_string(output[:size])
 
