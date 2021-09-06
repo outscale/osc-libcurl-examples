@@ -7,19 +7,6 @@
 
 require 'ffi'
 
-module LibC
-  extend FFI::Library
-  ffi_lib FFI::Library::LIBC
-
-  # memory allocators
-  attach_function :malloc, [:size_t], :pointer
-  attach_function :realloc, [:pointer, :size_t], :pointer
-
-  # memory movers
-  attach_function :memcpy, [:pointer, :pointer, :size_t], :pointer
-end
-
-
 module Curl
   extend FFI::Library
   lib_path = '/usr/lib/libcurl.so'
