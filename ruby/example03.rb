@@ -9,7 +9,12 @@ require 'ffi'
 
 module Curl
   extend FFI::Library
-  ffi_lib '/usr/local/lib/libcurl.so' #Path to your curl library
+  lib_path = '/usr/lib/libcurl.so'
+
+  if ENV.include?("CURL_PATH") then
+    lib_path = ENV["CURL_PATH"] + "/libcurl.so"
+  end
+  ffi_lib lib_path #Path to your curl library
 
   typedef :long_long, :curl_off_t
 
