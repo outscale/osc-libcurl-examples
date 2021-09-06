@@ -2,7 +2,7 @@ Curl and libcurl now supports AWSv4 signatures which allow Outscale users to use
 
 Not every language has an SDK for Outscale API but you can use libcurl to ease your journey thanks to [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface).
 
-This reprository shows how to use libcurl with [Outscale's API](https://docs.outscale.com/api) in three different languages.
+This repository shows how to use libcurl with [Outscale's API](https://docs.outscale.com/api) in different programming languages.
 
 # Running examples
 
@@ -11,7 +11,7 @@ You will need:
 - An account on eu-west-2 region
 - Setup your credentials through environment variables `OSC_ACCESS_KEY` and `OSC_SECRET_KEY`
 
-# Contributing 
+# Contributing
 
 Want to add more examples? Have a question? Feel free to open an issue.
 
