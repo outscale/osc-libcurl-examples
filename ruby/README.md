@@ -11,4 +11,5 @@ This example show how to make a call to the API whit data to POST.
 
 - install ruby-ffi
 - set CURL_PATH to the good environement variable unless /usr/lib/libcurl.so existe
-- `ruby example01.rb` or  `CURL_PATH=/usr/lib64 ruby example01.rb`
+- be sure ak, sk are set as OSC_ACCESS_KEY and OSC_SECRET_KEY
+- `ruby example02.rb` or  `CURL_PATH=/usr/lib64 ruby example02.rb`

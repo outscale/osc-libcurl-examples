@@ -70,7 +70,9 @@ Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
-Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESKEY:SECRETKEY")
+
+aksk = ENV["OSC_ACCESS_KEY"] + ":" + ENV["OSC_SECRET_KEY"]
+Curl.easy_setopt_string(c, :CURLOPT_USERPWD, aksk)
 
 
 Curl.curl_easy_perform(c)

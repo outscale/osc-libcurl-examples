@@ -92,6 +92,7 @@ end
 
 # We initialise a varaible with an empty struct
 output = Curl::DataStruct.new
+aksk = ENV["OSC_ACCESS_KEY"] + ":" + ENV["OSC_SECRET_KEY"]
 
 # We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
@@ -105,7 +106,7 @@ Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
-Curl.easy_setopt_string(c, :CURLOPT_USERPWD, "ACCESSKEY:SECRETKEY")
+Curl.easy_setopt_string(c, :CURLOPT_USERPWD, aksk)
 
 # The first function tells libcurl to use our callback method
 # The second line we pass the varaible where the data should be written
