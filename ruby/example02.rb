@@ -1,5 +1,5 @@
-# Easy api call with authentication and writing result data into file 
-#    
+# Easy api call with authentication and writing result data into file
+#
 #   Replace ACCESSKEY:SECRETKEY by yours
 #
 #   NOTICE : This example only works with libcurl 7.75 or above
@@ -10,14 +10,13 @@ require 'ffi'
 module LibC
   extend FFI::Library
   ffi_lib FFI::Library::LIBC
-  
+
   # memory allocators
   attach_function :malloc, [:size_t], :pointer
   attach_function :realloc, [:pointer, :size_t], :pointer
-  
+
   # memory movers
   attach_function :memcpy, [:pointer, :pointer, :size_t], :pointer
-  
 end
 
 
@@ -27,13 +26,13 @@ module Curl
 
   typedef :long_long, :curl_off_t
 
-  #Curl use different ranges of values for the defines we do the same 
+  #Curl use different ranges of values for the defines we do the same
   option_long          = 0
   option_objectpoint   = 10000
-  option_functionpoint = 20000 
+  option_functionpoint = 20000
   option_off_t         = 30000
   option_cbpoint       = option_objectpoint
-  
+
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
                  :CURLOPT_VERBOSE,       option_long + 41,
@@ -66,13 +65,12 @@ module Curl
     layout :data, :pointer,
            :size, :size_t
   end
-  
+
   attach_function :easy_setopt_long, :curl_easy_setopt, [:pointer, :option, :long], :int
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
 
-  
   # Function called by CURLOPT_WRITEFUNCTION. It copy the data of data pointer into userp and return a size
   Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, DataStruct.by_ref]) do |data, size, nmemb, userp|
     realsize = size * nmemb
@@ -81,13 +79,10 @@ module Curl
     p_data = FFI::MemoryPointer.new(:char, realsize)
     p_data.write_string(data.read_string(realsize))
     p_data.autorelease = true
-    
     userp[:size] = realsize
     userp[:data] = p_data
-    
     realsize
   end
-  
 end
 
 # We initialise a varaible with an empty struct
@@ -96,7 +91,7 @@ output = Curl::DataStruct.new
 # We let FFI manage pointers for us
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
 
-# Putting the URL and posible POST data 
+# Putting the URL and posible POST data
 Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadVms")
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
 
@@ -115,7 +110,7 @@ Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, output)
 # You can store the return value into a variable : it returns an integer
 code = Curl.curl_easy_perform(c)
 
-#To use the output we read the string referenced by the pointer 
+#To use the output we read the string referenced by the pointer
 output_str = output[:data].read_string(output[:size])
 
 puts output_str

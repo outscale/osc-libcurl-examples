@@ -1,4 +1,4 @@
-# Easy API CALL with authentication and data in postfield 
+# Easy API CALL with authentication and data in postfield
 #
 #    Replace ACCESSKEY:SECRETKEY by yours
 #
@@ -16,9 +16,9 @@ module Curl
   #Curl use different ranges of values for the defines we do the same
   option_long          = 0
   option_objectpoint   = 10000
-  option_functionpoint = 20000 
+  option_functionpoint = 20000
   option_off_t         = 30000
-  
+
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
                  :CURLOPT_VERBOSE,       option_long + 41,
@@ -43,12 +43,11 @@ module Curl
   Explanation : In the enum, each symbol is associated with a value in the shape of : option_* + value
                 Use the above table to match the rigth option and method.
 
-=end  
+=end
   attach_function :easy_setopt_long, :curl_easy_setopt, [:pointer, :option, :long], :int
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
-  
 end
 
 # Data for the post request as a string
