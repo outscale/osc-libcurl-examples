@@ -66,7 +66,7 @@ Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, data)
 
 # Let's see what curl is doing
-Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
+#Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")

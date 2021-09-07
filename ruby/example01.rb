@@ -62,7 +62,7 @@ Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
 
 # Let's see what curl is doing
-Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
+#Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
 
 
 Curl.curl_easy_perform(c)
