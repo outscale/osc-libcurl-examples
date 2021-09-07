@@ -28,7 +28,6 @@ void main(){
 
   // Data to post. See : https://docs.outscale.com/api, for more information
   const char *data = "{ \"Filters\": {\"VmIds\": [\"i-42s6t6n6\"] } }";
-  
   CURLcode res;
 
   // Creating the handler

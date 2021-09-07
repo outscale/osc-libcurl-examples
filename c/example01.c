@@ -16,13 +16,11 @@ This example also shows how to read available images and all their informations.
 /* Function that will write the data inside a variable */
 size_t write_data(void *data, size_t size, size_t nmemb, void *userp){
   size_t realsize = size * nmemb;
-
   char **response = userp;
-  
+
   *response = malloc(realsize);
-  memcpy(*response, data, realsize); 
-  
-  return realsize; 
+  memcpy(*response, data, realsize);
+  return realsize;
 }
 
 int main(void){
@@ -31,16 +29,14 @@ int main(void){
   const char *sk = getenv("OSC_SECRET_KEY");
 
   char ak_sk[AK_SIZE + SK_SIZE + 2];
-  
+
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
     abort();
   }
-  
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
 
   /* Variable that will store the data */
   char *response;
-  
   CURLcode res;
 
   /* Creating the handler */

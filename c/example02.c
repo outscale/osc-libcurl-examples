@@ -17,9 +17,8 @@ void main(){
   // Getting the access key / secret key from environement
   const char *ak = getenv("OSC_ACCESS_KEY");
   const char *sk = getenv("OSC_SECRET_KEY");
-
   char ak_sk[AK_SIZE + SK_SIZE + 2];
- 
+
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
     abort();
   }
@@ -29,7 +28,6 @@ void main(){
   // Data to post. See : https://docs.outscale.com/api, for more information
   const char *data = "{ \"Description\": \"This is a security rule created by a c program \","
     "\"SecurityGroupName\":  \"sg_c_libcurl\" }";
-  
   CURLcode res;
 
   // Creating the handler
