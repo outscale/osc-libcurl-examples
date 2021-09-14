@@ -13,14 +13,21 @@ This example also shows how to read available images and all their informations.
 #define AK_SIZE 20
 #define SK_SIZE 40
 
+struct resp {
+	int len;
+	char *buf;
+};
+
 /* Function that will write the data inside a variable */
 size_t write_data(void *data, size_t size, size_t nmemb, void *userp){
-  size_t realsize = size * nmemb;
-  char **response = userp;
+  size_t bufsize = size * nmemb;
+  struct resp *response = userp;
+  int olen = response->len;
 
-  *response = malloc(realsize);
-  memcpy(*response, data, realsize);
-  return realsize;
+  response->len = response->len + bufsize;
+  response->buf = realloc(response->buf, response->len);
+  memcpy(response->buf + olen, data, bufsize);
+  return bufsize;
 }
 
 int main(void){
@@ -36,7 +43,7 @@ int main(void){
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
 
   /* Variable that will store the data */
-  char *response;
+  struct resp response = {0};
   CURLcode res;
 
   /* Creating the handler */
@@ -46,7 +53,6 @@ int main(void){
   curl_easy_setopt(c, CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadImages");
 
   /* Let's see what curl is doing */
-  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
 
   /* Empty post field to indicate we want to send a post request */
   curl_easy_setopt(c, CURLOPT_POSTFIELDS, "");
@@ -63,5 +69,6 @@ int main(void){
 
   curl_easy_cleanup(c);
 
-  printf("\n\n Output : %s", response);
+  printf("%s", response.buf);
+  free(response.buf);
 }

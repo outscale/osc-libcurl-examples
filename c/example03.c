@@ -27,17 +27,14 @@ void main(){
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
 
   // Data to post. See : https://docs.outscale.com/api, for more information
-  const char *data = "{ \"Filters\": {\"VmIds\": [\"i-42s6t6n6\"] } }";
+  const char *data = "{ \"Filters\": {\"Descriptions\": [\"Ubuntu*\"] } }";
   CURLcode res;
 
   // Creating the handler
   CURL *c = curl_easy_init();
 
   // Setting the url
-  curl_easy_setopt(c, CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadVms");
-
-  // Let's see what curl is doing
-  curl_easy_setopt(c, CURLOPT_VERBOSE, 1L);
+  curl_easy_setopt(c, CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadImages");
 
   // Empty post field to indicate we want to send a post request
   curl_easy_setopt(c, CURLOPT_POSTFIELDS, data);
