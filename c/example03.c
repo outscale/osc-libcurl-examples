@@ -13,7 +13,8 @@ The answer from the request is displayed on the standard output.
 #define AK_SIZE 20
 #define SK_SIZE 40
 
-void main(){
+void main()
+{
   // Getting the access key / secret key from environement
   const char *ak = getenv("OSC_ACCESS_KEY");
   const char *sk = getenv("OSC_SECRET_KEY");

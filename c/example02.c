@@ -34,12 +34,13 @@ void main(){
   CURL *c = curl_easy_init();
   const char *op;
 
-  // Setting the url
+ // Setting the url
   op = "https://api.eu-west-2.outscale.com/api/v1/CreateSecurityGroup";
   curl_easy_setopt(c, CURLOPT_URL, op);
 
   // Empty post field to indicate we want to send a post request
   curl_easy_setopt(c, CURLOPT_POSTFIELDS, data);
+  //curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
 
   // For authentification we specify the method and our acces key / secret key
   curl_easy_setopt(c, CURLOPT_AWS_SIGV4, "osc");
@@ -49,7 +50,14 @@ void main(){
 
   op = "https://api.eu-west-2.outscale.com/api/v1/ReadSecurityGroups";
   curl_easy_setopt(c, CURLOPT_URL, op);
-  curl_easy_setopt(c, CURLOPT_POSTFIELDS, NULL);
+  curl_easy_setopt(c, CURLOPT_POSTFIELDS,
+		   "{\"Filters\": { \"SecurityGroupNames\": [\"sg_c_libcurl\"]}}");
+  res = curl_easy_perform(c);
+
+  op = "https://api.eu-west-2.outscale.com/api/v1/DeleteSecurityGroup";
+  curl_easy_setopt(c, CURLOPT_URL, op);
+  curl_easy_setopt(c, CURLOPT_POSTFIELDS,
+		   "{\"SecurityGroupName\": \"sg_c_libcurl\" }");
   res = curl_easy_perform(c);
 
   curl_easy_cleanup(c);
