@@ -44,7 +44,7 @@ fn main() {
         let c = curl_easy_init();
 
         // See what curl is doing
-        curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
+        // curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
 
         // Setting url and post field
         curl_easy_setopt(c, CURLOPT_URL, url.to_str().unwrap());
@@ -71,6 +71,6 @@ fn main() {
         //Getting the wraped value by shadowing the variable response
         let response = &(*response.take());
 
-        println!("Output : {} \n", response);
+        println!("{{ \"json-output\": {} }} \n", response);
     }
 }

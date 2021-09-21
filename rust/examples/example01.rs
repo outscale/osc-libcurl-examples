@@ -22,7 +22,7 @@ fn main() {
         let c = curl_easy_init();
 
         // See what curl is doing
-        curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
+        // curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
 
         // Setting url
         curl_easy_setopt(c, CURLOPT_URL, url.to_str().unwrap());
