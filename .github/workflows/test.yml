@@ -27,11 +27,12 @@ jobs:
       - uses: actions/setup-ruby@v1
 
       # Runs a single command using the runners shell
-      - name: setup json-search
+      - name: setup
         run: |
           wget https://github.com/cosmo-ray/json-search/releases/download/0.1/json-search-x86_64.AppImage
           chmod +x ./json-search-x86_64.AppImage
           cp ./json-search-x86_64.AppImage ./json-search
+          gem install ffi
 
       # Runs a set of commands using the runners shell
       - name: Tests
