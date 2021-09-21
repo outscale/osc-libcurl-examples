@@ -39,6 +39,7 @@ jobs:
         env:
           OSC_ACCESS_KEY: ${{ secrets.OSC_ACCESS_KEY }}
           OSC_SECRET_KEY: ${{ secrets.OSC_SECRET_KEY }}
-          PATH: $PATH:$PWD
+          CURL_PATH: "/usr/lib/x86_64-linux-gnu/"
+          PATH: "$PATH:$PWD"
         run: |
           ./tests.sh
