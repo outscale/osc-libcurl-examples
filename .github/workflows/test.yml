@@ -37,6 +37,8 @@ jobs:
 
       - name: setup
         run: |
+          echo $PATH $PWD $CURL_PATH
+          json-search -h
           wget https://github.com/cosmo-ray/json-search/releases/download/0.1/json-search-x86_64.AppImage
           chmod +x ./json-search-x86_64.AppImage
           cp ./json-search-x86_64.AppImage ./json-search
