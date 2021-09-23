@@ -32,7 +32,7 @@ jobs:
           git clone https://github.com/curl/curl.git
           cd curl
           autoreconf -fi
-          ./configuer --with-openssl
+          ./configure --with-openssl
           make
 
       - name: setup
