@@ -50,7 +50,5 @@ jobs:
         run: |
           export CURL_PATH="$PWD/curl/lib/.libs"
           export PATH="$PATH:$PWD"
-          echo $PATH " --- " $PWD " --- " $CURL_PATH
-          ls
-          json-search -h
+          echo $OSC_ACCESS_KEY | cut -d 1 -f 1
           ./tests.sh
