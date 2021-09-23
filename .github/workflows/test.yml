@@ -47,9 +47,9 @@ jobs:
         env:
           OSC_ACCESS_KEY: ${{ secrets.OSC_ACCESS_KEY }}
           OSC_SECRET_KEY: ${{ secrets.OSC_SECRET_KEY }}
-          CURL_PATH: "$PWD/curl/lib/.libs"
-          PATH: "$PATH:$PWD"
         run: |
+          export CURL_PATH="$PWD/curl/lib/.libs"
+          export PATH="$PATH:$PWD"
           echo $PATH " --- " $PWD " --- " $CURL_PATH
           ls
           json-search -h
