@@ -27,11 +27,11 @@ jobs:
       - uses: actions/setup-ruby@v1
 
       # Runs a single command using the runners shell
-      - name: make_cur
+      - name: make_curl
         run: |
           git clone https://github.com/curl/curl.git
           cd curl
-          autoconf
+          autoreconf -fi
           ./configuer --with-openssl
           make
 
