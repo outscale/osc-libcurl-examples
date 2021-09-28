@@ -53,4 +53,5 @@ jobs:
           export LD_LIBRARY_PATH="$PWD/curl/lib/.libs"
           export CFLAGS="-I$PWD/curl/include/"
           export LDFLAGS="-L$PWD/curl/lib/.libs/"
+          export RUSTFLAGS="-L$PWD/curl/lib/.libs/"
           ./tests.sh
