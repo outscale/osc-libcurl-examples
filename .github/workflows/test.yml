@@ -45,7 +45,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Tests
         env:
-          OSC_ACCESS_KEY: ${{ secrets.ak_sk.OSC_ACCESS_KEY }}
+          OSC_ACCESS_KEY: ${{ secrets.OSC_ACCESS_KEY }}
           OSC_SECRET_KEY: ${{ secrets.OSC_SECRET_KEY }}
         run: |
           export CURL_PATH="$PWD/curl/lib/.libs"
