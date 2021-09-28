@@ -2,14 +2,16 @@
 
 all: example01 example02 example03 test
 
+CFLAGS+= "-g"
+
 example01:
-	gcc -g example01.c -o example01 -lcurl
+	gcc example01.c -o example01 -lcurl $(CFLAGS)
 
 example02:
-	gcc -g example02.c -o example02 -lcurl
+	gcc example02.c -o example02 -lcurl $(CFLAGS)
 
 example03:
-	gcc -g example03.c -o example03 -lcurl
+	gcc -g example03.c -o example03 -lcurl $(CFLAGS)
 
 clean:
 	rm -rvf example01 example02 example03
