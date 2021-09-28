@@ -51,6 +51,5 @@ jobs:
           export CURL_PATH="$PWD/curl/lib/.libs"
           export PATH="$PATH:$PWD"
           export LD_LIBRARY_PATH="$PWD/curl/lib/.libs"
-          echo -n 'OSC_ACCESS_KEY/2:'
-          echo $OSC_ACCESS_KEY | cut -d 1 -f 1
+          export CFLAGS="-I$PWD/curl/include/" 
           ./tests.sh
