@@ -35,6 +35,8 @@ int main(void){
   const char *ak = getenv("OSC_ACCESS_KEY");
   const char *sk = getenv("OSC_SECRET_KEY");
 
+  if (ak == NULL || sk == NULL)
+    exit(1);
   char ak_sk[AK_SIZE + SK_SIZE + 2];
 
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
