@@ -5,11 +5,17 @@ This example show how to make a call to the API and saving the result in a varai
 This example show how to make a call to the API with POST to create a Security Group.
 
 # Example 3
-This example show how to make a call to the API filtering the result with POST data.
+This example show how to make a call to the API whit data to POST.
 
-# Build and Run
+# Build
 
 ```
-gcc example01.c -o example01 -lcurl
-./example01
+make or make example01, 02 or 03
+make debug or make example01debug, 02 or 03
+```
+
+# Run
+
+```
+./example01, 02 or 03
 ```

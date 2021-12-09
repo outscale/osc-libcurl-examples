@@ -42,7 +42,8 @@ int main(void){
   char ak_sk[AK_SIZE + SK_SIZE + 2];
 
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
-    abort();
+    printf("wrong size of ak or sk");
+    exit(1);
   }
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
 
@@ -52,6 +53,13 @@ int main(void){
 
   /* Creating the handler */
   CURL *c = curl_easy_init();
+
+  /* Creating HEADERS */
+  struct curl_slist *hs = NULL;
+  hs = curl_slist_append(hs, "Content-Type: application/json");
+
+  /* Setting HEADERS */
+  curl_easy_setopt(c, CURLOPT_HTTPHEADER, hs);
 
   /* Setting the url */
   curl_easy_setopt(c, CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadImages");
@@ -70,6 +78,8 @@ int main(void){
   curl_easy_setopt(c, CURLOPT_USERPWD, ak_sk);
 
   res = curl_easy_perform(c);
+
+  curl_slist_free_all(hs);
 
   curl_easy_cleanup(c);
 
