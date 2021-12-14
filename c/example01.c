@@ -36,14 +36,14 @@ int main(void){
   const char *sk = getenv("OSC_SECRET_KEY");
 
   if (ak == NULL || sk == NULL) {
-    printf("ak or sk not declared");
-    exit(1);
+    fprintf(stderr, "OSC_ACCESS_KEY or OSC_SECRET_KEY environement variable not set\n");
+    return(1);
   }
   char ak_sk[AK_SIZE + SK_SIZE + 2];
 
   if (strlen(ak) != AK_SIZE || strlen(sk) != SK_SIZE) {
-    printf("wrong size of ak or sk");
-    exit(1);
+    fprintf(stderr, "Wrong size OSC_ACCESS_KEY or OSC_SECRET_KEY\n");
+    return(1);
   }
   stpcpy(stpcpy(stpcpy(ak_sk, ak), ":"), sk);
 
