@@ -26,6 +26,7 @@ module Curl
 
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
+                 :CURLOPT_HTTPHEADER,    option_objectpoint + 23,
                  :CURLOPT_VERBOSE,       option_long + 41,
                  :CURLOPT_POSTFIELDS,    option_objectpoint + 15,
                  :CURLOPT_POSTFIELDSIZE, option_long + 60,
@@ -37,6 +38,7 @@ module Curl
   attach_function :curl_easy_cleanup, [:pointer], :void
   attach_function :curl_easy_perform, [:pointer], :int
   attach_function :curl_slist_append, [:pointer, :string], :pointer
+  attach_function :curl_slist_free_all, [:pointer], :void
 
 =begin
   To use the right easy_setopt function refer to this :
@@ -60,8 +62,10 @@ data = '{ "IpRange": "10.0.0.1/16" }'
 
 # We let FFI manage pointers
 c = FFI::AutoPointer.new(Curl.curl_easy_init, Curl.method(:curl_easy_cleanup))
+hs = FFI::AutoPointer.new(Curl.curl_slist_append(hs, "Content-Type: application/json"), Curl.method(:curl_slist_free_all))
 
 # Putting the URL and posible POST data
+Curl.easy_setopt_pointer(c, :CURLOPT_HTTPHEADER, hs)
 Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/CreateNet")
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, data)
 
