@@ -22,8 +22,9 @@ example03debug:
 
 clean:
 	rm -rvf example01 example02 example03
+	rm -rvf example01debug example02debug example03debug
 
 clean_dsym: clean
-	rm -rvf example01debug example02debug example03debug example01.dSYM example02.dSYM example03.dSYM
+	rm -rvf example01.dSYM example02.dSYM example03.dSYM
 
 .PHONY: clean clean_dsym
