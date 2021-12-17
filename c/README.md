@@ -5,7 +5,7 @@ This example show how to make a call to the API and saving the result in a varai
 This example show how to make a call to the API with POST to create a Security Group.
 
 # Example 3
-This example show how to make a call to the API whit data to POST.
+This example show how to make a call to the API that doesn't require signature V4
 
 # Build
 
