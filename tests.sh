@@ -54,7 +54,7 @@ rm out
 echo " ok !"
 
 echo -n "example03"
-./example03 | grep Images > /dev/null
+./example03 | grep ServiceName > /dev/null
 echo " ok !"
 cd ..
 
