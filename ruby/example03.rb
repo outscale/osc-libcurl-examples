@@ -6,6 +6,9 @@
 #
 
 require 'ffi'
+require 'json'
+
+$str_out = ""
 
 module Curl
   extend FFI::Library
@@ -23,6 +26,7 @@ module Curl
   option_objectpoint   = 10000
   option_functionpoint = 20000
   option_off_t         = 30000
+  option_cbpoint       = option_objectpoint
 
   enum :option, [:CURLOPT_URL,           option_objectpoint + 2,
                  :CURLOPT_USERPWD,       option_objectpoint + 5,
@@ -30,7 +34,9 @@ module Curl
                  :CURLOPT_VERBOSE,       option_long + 41,
                  :CURLOPT_POSTFIELDS,    option_objectpoint + 15,
                  :CURLOPT_POSTFIELDSIZE, option_long + 60,
-                 :CURLOPT_AWS_SIGV4,     option_objectpoint + 305
+                 :CURLOPT_AWS_SIGV4,     option_objectpoint + 305,
+                 :CURLOPT_WRITEDATA,     option_cbpoint + 1,
+                 :CURLOPT_WRITEFUNCTION, option_functionpoint + 11
                 ]
 
   #Attaching functions
@@ -55,6 +61,23 @@ module Curl
   attach_function :easy_setopt_string, :curl_easy_setopt, [:pointer, :option, :string], :int
   attach_function :easy_setopt_pointer, :curl_easy_setopt, [:pointer, :option, :pointer], :int
   attach_function :easy_setopt_curl_off_t, :curl_easy_setopt, [:pointer, :option, :curl_off_t], :int
+
+  #Struct that holds the data returned by libcurl as a pointer and the size of the data
+  class DataStruct < FFI::Struct
+
+
+    layout :data, :pointer,
+           :size, :size_t
+  end
+
+  # Function called by CURLOPT_WRITEFUNCTION. It copy the data of data pointer into userp and return a size
+  Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, DataStruct.by_ref]) do |data, size, nmemb, userp|
+    realsize = size * nmemb
+
+    $str_out = $str_out + data.read_string(realsize)
+    realsize
+  end
+
 end
 
 # Data for the post request as a string
@@ -69,8 +92,10 @@ Curl.easy_setopt_pointer(c, :CURLOPT_HTTPHEADER, hs)
 Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/CreateNet")
 Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, data)
 
-# Let's see what curl is doing
-#Curl.easy_setopt_long(c, :CURLOPT_VERBOSE, 1)
+# The first function tells libcurl to use our callback method
+# The second line we pass the varaible where the data should be written
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEFUNCTION, Curl::Callback)
+Curl.easy_setopt_pointer(c, :CURLOPT_WRITEDATA, nil)
 
 # To authenticate
 Curl.easy_setopt_string(c, :CURLOPT_AWS_SIGV4, "osc")
@@ -80,3 +105,25 @@ Curl.easy_setopt_string(c, :CURLOPT_USERPWD, aksk)
 
 
 Curl.curl_easy_perform(c)
+jsom_file = JSON.parse($str_out)
+print("Create new net: ", jsom_file["Net"]["NetId"], "\n")
+net_id = jsom_file["Net"]["NetId"]
+
+Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadNets")
+Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
+$str_out = ""
+Curl.curl_easy_perform(c)
+print("Read Nets :", $str_out, "\n")
+
+Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/DeleteNet")
+data = '{"NetId": "' + net_id + '"}'
+Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, data)
+$str_out = ""
+Curl.curl_easy_perform(c)
+print("Delete ", net_id, " output:", $str_out, "\n")
+
+Curl.easy_setopt_string(c, :CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/ReadNets")
+Curl.easy_setopt_string(c, :CURLOPT_POSTFIELDS, "")
+$str_out = ""
+Curl.curl_easy_perform(c)
+print($str_out, "\n")
