@@ -4,6 +4,7 @@ use std::cell::RefCell;
 use std::env;
 use std::ffi::{CStr, CString};
 use std::rc::Rc;
+use std::ptr;
 
 use rust::*;
 
@@ -45,6 +46,10 @@ fn main() {
 
         // See what curl is doing
         // curl_easy_setopt(c, CURLOPT_VERBOSE, 1);
+        let content_type = CString::new("Content-Type: application/json").unwrap();
+        let list = curl_slist_append(ptr::null_mut(), content_type.as_ptr());
+
+        curl_easy_setopt(c, CURLOPT_HTTPHEADER, list);
 
         // Setting url and post field
         curl_easy_setopt(c, CURLOPT_URL, url.to_str().unwrap());
@@ -67,6 +72,7 @@ fn main() {
         curl_easy_perform(c);
 
         curl_easy_cleanup(c);
+        curl_slist_free_all(list);
 
         //Getting the wraped value by shadowing the variable response
         let response = &(*response.take());

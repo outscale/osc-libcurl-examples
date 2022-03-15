@@ -19,6 +19,7 @@ pub const CURLOPT_USERPWD: CURLoption = CURLOPTTYPE_OBJECTPOINT + 5;
 pub const CURLOPT_POSTFIELDS: CURLoption = CURLOPTTYPE_OBJECTPOINT + 15;
 pub const CURLOPT_WRITEDATA: CURLoption = CURLOPTTYPE_CBPOINT + 1;
 pub const CURLOPT_WRITEFUNCTION: CURLoption = CURLOPTTYPE_FUNCTIONPOINT + 11;
+pub const CURLOPT_HTTPHEADER: CURLoption = CURLOPTTYPE_OBJECTPOINT + 23;
 
 #[link(name = "curl")]
 extern "C" {
@@ -26,4 +27,6 @@ extern "C" {
     pub fn curl_easy_cleanup(curl: *mut CURL);
     pub fn curl_easy_setopt(curl: *mut CURL, option: CURLoption, ...) -> libc::c_int;
     pub fn curl_easy_perform(curl: *mut CURL) -> libc::c_int;
+    pub fn curl_slist_append(list: *mut libc::c_void, val: *const i8) -> *mut libc::c_void;
+    pub fn curl_slist_free_all(list: *mut libc::c_void);
 }
