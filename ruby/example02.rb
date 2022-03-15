@@ -70,8 +70,15 @@ module Curl
     realsize = size * nmemb
 
     # We can't write literal string inside struct so we write the data to a pointer
-    p_data = FFI::MemoryPointer.new(:char, realsize)
-    p_data.write_string(data.read_string(realsize))
+    if userp[:size] > 0 then
+      tmp = userp[:data].read_string(userp[:size]) + data.read_string(realsize)
+      realsize = userp[:size] + realsize
+      p_data = FFI::MemoryPointer.new(:char, realsize)
+      p_data.write_string(tmp)
+    else
+      p_data = FFI::MemoryPointer.new(:char, realsize)
+      p_data.write_string(data.read_string(realsize))
+    end
     userp[:size] = realsize
     userp[:data] = p_data
     realsize

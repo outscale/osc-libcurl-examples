@@ -1,7 +1,6 @@
 /* Example 03 :
-This example show how to make a call to the API whit data to POST.
-
-    /!\ : This example only work with libcurl 7.75 or above
+   This example show how to make a Without AK SK,
+   for services that doesn't need auth.
  */
 
 #include "curl/curl.h"

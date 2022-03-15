@@ -30,7 +30,7 @@ ruby example02.rb | grep Vms > /dev/null
 echo " ok !"
 
 echo -n "example03"
-ruby example03.rb | grep Net > /dev/null
+ruby example03.rb | grep AccessPointServices > /dev/null
 echo " ok !"
 cd ..
 
