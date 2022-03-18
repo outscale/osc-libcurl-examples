@@ -73,4 +73,16 @@ cargo run --example example03 | json-search "Vms" > /dev/null
 echo " ok !"
 cd ..
 
+cd nodejs
+echo "--- Nodejs Test ---"
+echo -n "example01 "
+node example01 | json-search "ServiceName" > /dev/null
+echo " ok !"
+
+echo -n "example02 "
+node example02 | json-search "Vms" > /dev/null
+echo " ok !"
+
+cd ..
+
 trap - 0
