@@ -41,6 +41,7 @@ jobs:
           chmod +x ./json-search-x86_64.AppImage
           cp ./json-search-x86_64.AppImage ./json-search
           gem install ffi
+          npm install ffi-napi
 
       # Runs a set of commands using the runners shell
       - name: Tests
