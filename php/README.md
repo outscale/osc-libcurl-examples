@@ -1,7 +1,9 @@
 # Note
 
 **REQUIRE PHP 8.2 OR SUPERRIOR**
+
 This message been writed in 2022, Most likelly you need to recompille it.
+
 it's like ./buildroor; ./configure --with-curl; make -jNUMBER_OF_CORE_FLEX; ./sapi/cli/php PATH/TO/THIS/FILE
 
 # Examples:
