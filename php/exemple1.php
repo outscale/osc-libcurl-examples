@@ -1,10 +1,6 @@
 <?php
 
-//
 // REQUIRE PHP 8.2 OR SUPERRIOR
-// This message been writed in 2022. Most likelly you need to recompille it.
-// it's like ./buildroor; ./configure --with-curl; make -jNUMBER_OF_CORE_FLEX; ./sapi/cli/php PATH/TO/THIS/FILE
-//
 
 function call($c, $call, $arg) {
     curl_setopt($c, CURLOPT_URL, "https://api.eu-west-2.outscale.com/api/v1/".$call);
