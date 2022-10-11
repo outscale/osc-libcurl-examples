@@ -4,7 +4,10 @@
 
 This message been writed in 2022, Most likelly you need to recompille it.
 
-it's like ./buildroor; ./configure --with-curl; make -jNUMBER_OF_CORE_FLEX; ./sapi/cli/php PATH/TO/THIS/FILE
+it's like 
+```
+./buildconf ./configure --with-curl; make -jNUMBER_OF_CORE_FLEX; ./sapi/cli/php PATH/TO/PHP8.2/FILE
+```
 
 # Examples:
 
