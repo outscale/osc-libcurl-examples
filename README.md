@@ -1,3 +1,6 @@
+# libcurl examples on Outscale cloud
+[![Project Sandbox](https://docs.outscale.com/fr/userguide/_images/Project-Sandbox-yellow.svg)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
+
 Curl and libcurl now supports AWSv4 signatures which allow Outscale users to use standard tools to make API requests.
 
 Not every language has an SDK for Outscale API but you can use libcurl to ease your journey thanks to [FFI](https://en.wikipedia.org/wiki/Foreign_function_interface).
