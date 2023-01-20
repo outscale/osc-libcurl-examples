@@ -15,7 +15,7 @@ hs = curl.functions.curl_slist_append(hs, "Content-Type: application/json");
 
 var ustring = ""
 
-const wr_func = ffi.Callback('int', ['string', 'int', 'int', 'string'],
+const wr_func = ffi.Callback('int', ['string', 'int', 'int', 'pointer'],
 			     function (data, size, nmemb, user) {
 				 ustring += data;
 				 return nmemb;

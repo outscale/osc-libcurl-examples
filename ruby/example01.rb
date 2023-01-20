@@ -11,6 +11,8 @@ module Curl
   lib_path = '/usr/lib/libcurl.so'
   if ENV.include?("CURL_PATH") then
     lib_path = ENV["CURL_PATH"] + "/libcurl.so"
+  else if ENV.include?("CURL_PATH_FULL") then
+    lib_path = ENV["CURL_PATH_FULL"]
   end
   ffi_lib lib_path #Path to your curl library
 

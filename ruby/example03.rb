@@ -16,6 +16,8 @@ module Curl
 
   if ENV.include?("CURL_PATH") then
     lib_path = ENV["CURL_PATH"] + "/libcurl.so"
+  elsif ENV.include?("CURL_PATH_FULL") then
+    lib_path = ENV["CURL_PATH_FULL"]
   end
   ffi_lib lib_path #Path to your curl library
 
@@ -74,7 +76,7 @@ module Curl
   Callback = FFI::Function.new(:size_t, [:pointer, :size_t, :size_t, DataStruct.by_ref]) do |data, size, nmemb, userp|
     realsize = size * nmemb
 
-    $str_out = $str_out + data.read_string(realsize)
+    $str_out.concat(data.read_string(realsize))
     realsize
   end
 

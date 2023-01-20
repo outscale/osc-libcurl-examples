@@ -4,6 +4,8 @@ var lib_path = '/usr/lib/libcurl.so'
 
 if (process.env.CURL_PATH)
     lib_path = process.env.CURL_PATH + "/libcurl.so";
+else if (process.env.CURL_PATH_FULL)
+    lib_path = process.env.CURL_PATH_FULL
 
 var functions = ffi.Library(lib_path, {
     'curl_easy_init':      ['pointer' , [] ],

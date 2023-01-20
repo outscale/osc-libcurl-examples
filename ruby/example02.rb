@@ -13,6 +13,8 @@ module Curl
 
   if ENV.include?("CURL_PATH") then
     lib_path = ENV["CURL_PATH"] + "/libcurl.so"
+  elsif ENV.include?("CURL_PATH_FULL") then
+    lib_path = ENV["CURL_PATH_FULL"]
   end
   ffi_lib lib_path #Path to your curl library
 
