@@ -8,9 +8,6 @@ function call($c, $call, $arg) {
     return json_decode(curl_exec($c));
 }
 
-define("AK_SIZE", 20);
-define("SK_SIZE", 40);
-
 $ak = getenv("OSC_ACCESS_KEY");
 $sk = getenv("OSC_SECRET_KEY");
 
