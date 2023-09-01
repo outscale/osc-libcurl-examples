@@ -2,7 +2,7 @@
 
 **REQUIRE PHP 8.2 OR SUPERRIOR**
 
-This message been writed in 2022, Most likelly you need to recompille it.
+As this is a fearly recent versions of PHP, you might have to compile it.
 
 it's like 
 ```
