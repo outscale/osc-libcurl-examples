@@ -1,6 +1,6 @@
-all: example01 example02 example03
+all: example01 example02 example03 example04
 
-debug: example01debug example02debug example03debug
+debug: example01debug example02debug example03debug example04debug
 
 example01:
 	gcc example01.c -o example01 $(CFLAGS) -lcurl $(LDFLAGS)
@@ -20,11 +20,17 @@ example03:
 example03debug:
 	gcc example03.c -o example03debug $(CFLAGS) -g -lcurl $(LDFLAGS)
 
+example04:
+	gcc example04.c -o example04 $(CFLAGS) -lcurl $(LDFLAGS)
+
+example04debug:
+	gcc example04.c -o example04debug $(CFLAGS) -g -lcurl $(LDFLAGS)
+
 clean:
-	rm -rvf example01 example02 example03
-	rm -rvf example01debug example02debug example03debug
+	rm -rvf example01 example02 example03 example04
+	rm -rvf example01debug example02debug example03debug example04debug
 
 clean_dsym:
-	rm -rvf example01.dSYM example02.dSYM example03.dSYM
+	rm -rvf example01.dSYM example02.dSYM example03.dSYM example04.dSYM
 
 .PHONY: clean clean_dsym debug
