@@ -82,6 +82,16 @@ echo " ok !"
 echo -n "example02 "
 node example02 | json-search "Vms" > /dev/null
 echo " ok !"
+cd ..
+
+cd python
+echo "--- Python tests ---"
+echo -n "example01 "
+source env/bin/activate
+pip install -e .
+python example01.py "key" "value" | grep tag > /dev/null
+echo " ok !"
+deactivate
 
 cd ..
 
