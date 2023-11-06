@@ -12,6 +12,17 @@ class Tag:
         self.value = value
         self.resources_id = ressource_id
 
+def get_account_id(ak_sk):
+    # Setting the URL for read 
+    url = "https://api.eu-west-2.outscale.com/api/v1/ReadAccounts"
+    json_data = ""
+
+    curl = setup_curl(url, json_data, ak_sk)
+    response_data = send_request(curl)
+    
+    account_id = response_data['Accounts'][0]['AccountId']
+    return account_id
+
 def setup_curl(url, json_data, ak_sk):
     curl = pycurl.Curl()
     headers = ["Content-Type: application/json"]
@@ -47,20 +58,20 @@ def send_request(curl):
 def create_tag(tag, ak_sk):
     data = {"ResourceIds": [tag.resources_id],"Tags": [{"Key": tag.key, "Value": tag.value}]}
     json_data = json.dumps(data)
-    
+
     # Setting the URL for create
     url = "https://api.eu-west-2.outscale.com/api/v1/CreateTags"
-    
+
     curl = setup_curl(url, json_data, ak_sk)
     return send_request(curl)
 
 def delete_tag(tag, ak_sk):
     data = {"ResourceIds": [tag.resources_id], "Tags": [{"Key": tag.key, "Value": tag.value}]}
     json_data = json.dumps(data)
-    
+
     # Setting the URL for delete
     url = "https://api.eu-west-2.outscale.com/api/v1/DeleteTags"
-    
+
     curl = setup_curl(url, json_data, ak_sk)
     return send_request(curl)
 
@@ -69,12 +80,12 @@ def read_security_group(tag, ak_sk, account_id):
     account.append(account_id)
     data = {"Filters": {"AccountIds": account}}
     json_data = json.dumps(data)
-    
+
     # Setting the URL for read
     url = "https://api.eu-west-2.outscale.com/api/v1/ReadSecurityGroups"
-    
+
     response_data = send_request(setup_curl(url, json_data, ak_sk))
-    
+
     if response_data:
         return response_data
     else:
@@ -92,10 +103,11 @@ def main():
     # Getting the access key / secret key from the environment
     ak = os.getenv("OSC_ACCESS_KEY")
     sk = os.getenv("OSC_SECRET_KEY")
-    account_id = os.getenv("ACCOUNT_ID")
-         
-    if ak is None or sk is None or account_id is None:
-        print("OSC_ACCESS_KEY or OSC_SECRET_KEY or ACCOUNT_ID environment variable not set")
+    ak_sk = f"{ak}:{sk}"
+    account_id = get_account_id(ak_sk)
+
+    if ak is None or sk is None is None:
+        print("OSC_ACCESS_KEY or OSC_SECRET_KEY environment variable not set")
         return 1
 
     if len(ak) != AK_SIZE or len(sk) != SK_SIZE:
@@ -106,10 +118,8 @@ def main():
         print(f"Usage: {sys.argv[0]} <Key> <Value>")
         return 1
 
-    ak_sk = f"{ak}:{sk}"
     security_group_id = ""
     new_tag = Tag(sys.argv[1], sys.argv[2], security_group_id)
-
     response_data = read_security_group(new_tag, ak_sk, account_id)
 
     if response_data:
