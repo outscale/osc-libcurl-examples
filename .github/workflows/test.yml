@@ -27,6 +27,11 @@ jobs:
       - uses: actions/setup-ruby@v1
 
       # Runs a single command using the runners shell
+      - name: install_curl_config
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libcurl4-openssl-dev
+      
       - name: make_curl
         run: |
           git clone https://github.com/curl/curl.git

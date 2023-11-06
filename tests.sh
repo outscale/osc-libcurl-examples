@@ -86,12 +86,15 @@ cd ..
 
 cd python
 echo "--- Python tests ---"
-echo -n "example01 "
+echo "example01 "
+python3 -m venv env
 source env/bin/activate
 pip install -e .
 python example01.py "key" "value" | grep tag > /dev/null
-echo " ok !"
+echo "ok !"
 deactivate
+
+cd ..
 
 cd ..
 
