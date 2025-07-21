@@ -1,5 +1,5 @@
 # libcurl examples on Outscale cloud
-[![Project Sandbox](https://docs.outscale.com/fr/userguide/_images/Project-Sandbox-yellow.svg)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
+[![Project Archived](https://docs.outscale.com/fr/userguide/_images/Project-Archived-red.svg)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
 
 Curl and libcurl now supports AWSv4 signatures which allow Outscale users to use standard tools to make API requests.
 
